@@ -1,3 +1,4 @@
+import random
 from typing import List, Optional
 from week5.model.environment import Environment
 from week5.model.agent import Agent
@@ -47,3 +48,28 @@ class Ocean(Environment):
                 free_locations.append(new_location)
 
         return free_locations
+
+    def add_agent_randomly(self, agent) -> None:
+        """
+        Adds an agent at a random free location in the ocean.
+
+        Args:
+            agent : The agent to be added.
+        """
+        # Generate a list of all free locations in the grid
+        free_locations = [
+            Location(x, y)
+            for y in range(self.height)
+            for x in range(self.width)
+            if self.get_agent(Location(x, y)) is None
+        ]
+
+        # If there are no free locations, do nothing
+        if not free_locations:
+            return
+
+        # Choose a random free location
+        random_location = random.choice(free_locations)
+
+        # Place the agent at the chosen location
+        self.set_agent(agent, random_location)
